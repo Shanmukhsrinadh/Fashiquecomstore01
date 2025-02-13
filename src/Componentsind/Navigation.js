@@ -121,7 +121,7 @@ export default function HeaderAndSidebar({ open, handleDrawerOpen, handleDrawerC
         <Divider />
         <List>
           {[
-            { text: 'Products', icon: <StorefrontIcon /> },
+            { text: 'Products', icon: <StorefrontIcon />  },
             { text: 'Orders', icon: <ShoppingCartIcon /> },
             { text: 'Categories', icon: <CategoryIcon />, expandable: true },
             { text: 'Customers', icon: <PeopleIcon /> },
