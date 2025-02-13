@@ -1,119 +1,13 @@
 import * as React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Allproducts } from '../Data/Allproducts';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import StorefrontIcon from '@mui/icons-material/Storefront';
-import CategoryIcon from '@mui/icons-material/Category';
-import PeopleIcon from '@mui/icons-material/People';
-import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-
-const drawerWidth = 240;
-
-const openedMixin = (theme) => ({
-  width: drawerWidth,
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: 'hidden',
-});
-
-const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-}));
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  backgroundColor: '#212121',
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open
-      ? {
-          ...openedMixin(theme),
-          '& .MuiDrawer-paper': openedMixin(theme),
-        }
-      : {
-          ...closedMixin(theme),
-          '& .MuiDrawer-paper': closedMixin(theme),
-        }),
-  })
-);
-
-const MainContent = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `calc(${theme.spacing(7)} + 1px)`,
-    ...(open && {
-      marginLeft: drawerWidth,
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-    }),
-  })
-);
-
+import HeaderAndSidebar from '../Componentsind/Navigation';
 function ProductDetail() {
   const { id } = useParams();
   const product = Allproducts.find((p) => p.id === parseInt(id));
@@ -122,9 +16,7 @@ function ProductDetail() {
     return savedCart ? JSON.parse(savedCart) : [];
   });
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [open, setOpen] = React.useState(false); 
   const navigate = useNavigate();
-  const theme = useTheme();
 
   React.useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -150,13 +42,6 @@ function ProductDetail() {
     setSnackbarOpen(false);
   };
 
-  const handleDrawerOpen = () => setOpen(true);
-  const handleDrawerClose = () => setOpen(false);
-
-  const handleSidebarNavigation = (path) => {
-    navigate(path);
-  };
-
   if (!product) {
     return <div>Product not found</div>;
   }
@@ -167,50 +52,8 @@ function ProductDetail() {
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ marginRight: 2, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap sx={{ fontWeight: 'bold' }}>
-            Fashique
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {[
-            { text: 'Products', icon: <StorefrontIcon />, path: '/dashboard' },
-            { text: 'Orders', icon: <ShoppingCartIcon />, path: '/cart' },
-            { text: 'Categories', icon: <CategoryIcon />, path: '/categories' },
-            { text: 'Customers', icon: <PeopleIcon />, path: '/customers' },
-            { text: 'Contact us', icon: <ContactPhoneIcon />, path: '/contact' },
-          ].map(({ text, icon, path }) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton onClick={() => handleSidebarNavigation(path)}>
-                <ListItemIcon sx={{ color: '#555' }}>{icon}</ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0, fontWeight: 'bold' }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-
-      <MainContent open={open}>
-        <DrawerHeader />
+      <HeaderAndSidebar />
+      <Box sx={{ flexGrow: 1, paddingtop: '10px' }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px', padding: '20px' }}>
           <Box sx={{ flex: 1, maxWidth: '500px' }}>
             <img
@@ -345,7 +188,6 @@ function ProductDetail() {
           ))}
         </Box>
 
-
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={3000}
@@ -358,7 +200,7 @@ function ProductDetail() {
               : 'Added to cart successfully!'}
           </Alert>
         </Snackbar>
-      </MainContent>
+      </Box>
     </Box>
   );
 }
