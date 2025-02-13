@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Fashiquecomstore01/static/css/main.0dc38868.css",
-    "main.js": "/Fashiquecomstore01/static/js/main.fe48b710.js",
+    "main.js": "/Fashiquecomstore01/static/js/main.6e4ef67d.js",
     "static/media/fa-solid-900.ttf": "/Fashiquecomstore01/static/media/fa-solid-900.2582b0e4bcf85eceead0.ttf",
     "static/media/fa-brands-400.ttf": "/Fashiquecomstore01/static/media/fa-brands-400.1815e00441357e01619e.ttf",
     "static/media/fa-solid-900.woff2": "/Fashiquecomstore01/static/media/fa-solid-900.2463b90d9a316e4e5294.woff2",
@@ -12,10 +12,10 @@
     "static/media/fa-v4compatibility.woff2": "/Fashiquecomstore01/static/media/fa-v4compatibility.ea8f94e1d22e0d35ccd4.woff2",
     "index.html": "/Fashiquecomstore01/index.html",
     "main.0dc38868.css.map": "/Fashiquecomstore01/static/css/main.0dc38868.css.map",
-    "main.fe48b710.js.map": "/Fashiquecomstore01/static/js/main.fe48b710.js.map"
+    "main.6e4ef67d.js.map": "/Fashiquecomstore01/static/js/main.6e4ef67d.js.map"
   },
   "entrypoints": [
     "static/css/main.0dc38868.css",
-    "static/js/main.fe48b710.js"
+    "static/js/main.6e4ef67d.js"
   ]
 }
