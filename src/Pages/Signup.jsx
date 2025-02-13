@@ -100,11 +100,11 @@ function Signup() {
                                         label="Subscribe to our newsletter"
                                     />
                                 </div>
-                                {/* <Link to='/Login'> */}
+                                <Link to='/Login'>
                                     <MDBBtn className="w-100 mb-4" size="md" type="submit">
                                         Log In
                                     </MDBBtn>
-                                {/* </Link> */}
+                                </Link>
 
                             </form>
 

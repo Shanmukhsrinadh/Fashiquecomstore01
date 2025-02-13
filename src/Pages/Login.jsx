@@ -31,9 +31,9 @@ function App() {
             </div>
 
             <div className='text-center text-md-start mt-4 pt-2'>
-              {/* <Link to='/dashboard'> */}
+              <Link to='/dashboard'>
                 <MDBBtn className="mb-0 px-5" size='lg'>Login</MDBBtn>
-              {/* </Link> */}
+              </Link>
               <p className="small fw-bold mt-2 pt-1 mb-2">
                 Don't have an account?<Link to='/signup'>Register</Link>
               </p>
