@@ -21,6 +21,7 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import CategoryIcon from '@mui/icons-material/Category';
 import PeopleIcon from '@mui/icons-material/People';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+import { BrowserRouter as Router, useNavigate } from 'react-router-dom'; // Import necessary router components
 
 const drawerWidth = 240;
 
@@ -92,6 +93,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function HeaderAndSidebar({ open, handleDrawerOpen, handleDrawerClose, handleSectionChange }) {
   const theme = useTheme();
+  const navigate = useNavigate(); // Initialize useNavigate hook for navigation
+
+  const handleNavigate = (section) => {
+    if (section === 'Products') {
+      navigate('/dashboard'); // Redirect to /dashboard when "Orders" is clicked
+    }
+    handleSectionChange(section); // Change the section in the sidebar
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -120,15 +129,13 @@ export default function HeaderAndSidebar({ open, handleDrawerOpen, handleDrawerC
         </DrawerHeader>
         <Divider />
         <List>
-          {[
-            { text: 'Products', icon: <StorefrontIcon />  },
+          {[{ text: 'Products', icon: <StorefrontIcon /> },
             { text: 'Orders', icon: <ShoppingCartIcon /> },
             { text: 'Categories', icon: <CategoryIcon />, expandable: true },
             { text: 'Customers', icon: <PeopleIcon /> },
-            { text: 'Contact us', icon: <ContactPhoneIcon /> },
-          ].map(({ text, icon }) => (
+            { text: 'Contact us', icon: <ContactPhoneIcon /> }].map(({ text, icon }) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton onClick={() => handleSectionChange(text)}>
+              <ListItemButton onClick={() => handleNavigate(text)}>
                 <ListItemIcon sx={{ color: '#555' }}>{icon}</ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0, fontWeight: 'bold' }} />
               </ListItemButton>
@@ -139,3 +146,4 @@ export default function HeaderAndSidebar({ open, handleDrawerOpen, handleDrawerC
     </Box>
   );
 }
+
