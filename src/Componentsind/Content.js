@@ -17,7 +17,7 @@ function ControlledCarousel() {
   const carouselStyle = {
     height: '360px',
     objectFit: 'cover',
-    marginTop: '30px',
+    marginTop: '50px',
   };
 
   return (
@@ -64,9 +64,17 @@ function ControlledCarousel() {
 
 export default function MainContent({ activeSection, cart, setCart, handleSectionChange }) {
   const [orderPlaced, setOrderPlaced] = React.useState(false);
+  const [selectedCategory, setSelectedCategory] = React.useState(null); // State for selected category
   const navigate = useNavigate();
 
   const allproducts = Allproducts;
+
+  // Filter products based on selected category
+  const filteredProducts = selectedCategory
+    ? selectedCategory === 'Wearables'
+      ? allproducts.filter((product) => product.subCategory === 'Watches') // Filter for Wearables (Watches)
+      : allproducts.filter((product) => product.mainCategory === selectedCategory) // Filter for other categories
+    : allproducts;
 
   const handleAddToCart = (product) => {
     setCart((prevCart) => [...prevCart, product]);
@@ -89,15 +97,57 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
     setOrderPlaced(false);
   };
 
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category === selectedCategory ? null : category); // Toggle category selection
+  };
+
   return (
     <Box sx={{ flexGrow: 1, padding: 3 }}>
       {activeSection === 'Products' && (
         <>
           <ControlledCarousel />
+
+          {/* Category Cards */}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 3,
+              mt: 4,
+              mb: 4,
+            }}
+          >
+            {['Men', 'Women', 'Kids', 'Footwear', 'Wearables'].map((category) => (
+              <Box
+                key={category}
+                sx={{
+                  backgroundColor: selectedCategory === category ? '#00796b' : '#f5f5f5',
+                  borderRadius: '8px',
+                  padding: '16px',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s',
+                  '&:hover': { transform: 'scale(1.05)' },
+                }}
+                onClick={() => handleCategoryClick(category)}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 'bold',
+                    color: selectedCategory === category ? '#fff' : '#212121',
+                  }}
+                >
+                  {category}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+
           <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', mt: 3, color: 'black' }}>
-            All Products
+            {selectedCategory ? `${selectedCategory} Products` : 'All Products'}
           </Typography>
-          {allproducts.length === 0 ? (
+          {filteredProducts.length === 0 ? (
             <Typography sx={{ textAlign: 'center', color: '#777', fontSize: '1.1rem' }}>
               No products available.
             </Typography>
@@ -111,7 +161,7 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
                 color: '#777',
               }}
             >
-              {allproducts.map((product) => (
+              {filteredProducts.map((product) => (
                 <Box
                   key={product.id}
                   sx={{

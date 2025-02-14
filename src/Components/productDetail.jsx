@@ -57,7 +57,7 @@ function ProductDetail() {
 
   // Filter similar products
   const similarProducts = Allproducts.filter(
-    (p) => p.mainCategory === product.mainCategory && p.id !== product.id
+    (p) => p.subCategory === product.subCategory && p.id !== product.id
   );
 
   // Render similar products
