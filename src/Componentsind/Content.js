@@ -214,11 +214,11 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
 
       {activeSection === 'Orders' && (
         <>
-          <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', mt: 3, color: 'black' }}>
+          <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold', mt: 3, color: 'black', marginTop: 5 }}>
             Cart
           </Typography>
           {cart.length === 0 ? (
-            <Typography sx={{ textAlign: 'center', color: '#777', fontSize: '1.1rem' }}>
+            <Typography sx={{ textAlign: 'center', color: '#777', fontSize: '1.1rem', marginTop: 5 }}>
               Your cart is empty.
             </Typography>
           ) : (

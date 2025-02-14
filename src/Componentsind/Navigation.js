@@ -21,7 +21,9 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import CategoryIcon from '@mui/icons-material/Category';
 import PeopleIcon from '@mui/icons-material/People';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
-import { BrowserRouter as Router, useNavigate } from 'react-router-dom'; // Import necessary router components
+import LogoutIcon from '@mui/icons-material/Logout'; // Import Logout icon
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // Import User icon
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 
 const drawerWidth = 240;
 
@@ -95,11 +97,21 @@ export default function HeaderAndSidebar({ open, handleDrawerOpen, handleDrawerC
   const theme = useTheme();
   const navigate = useNavigate(); // Initialize useNavigate hook for navigation
 
+  // Retrieve username from localStorage
+  const username = localStorage.getItem('username') || 'Guest';
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('username'); // Clear username from localStorage
+    navigate('/Fashiquecomstore01'); // Redirect to login page
+  };
+
+  // Handle navigation for sidebar items
   const handleNavigate = (section) => {
     if (section === 'Products') {
-      navigate('/dashboard'); // Redirect to /dashboard when "Orders" is clicked
+      navigate('/dashboard'); // Redirect to /dashboard when "Products" is clicked
     }
-    handleSectionChange(section); // Change the section in the sidebar
+    handleSectionChange(section); 
   };
 
   return (
@@ -115,9 +127,16 @@ export default function HeaderAndSidebar({ open, handleDrawerOpen, handleDrawerC
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap sx={{ fontWeight: 'bold' }}>
+          <Typography variant="h6" noWrap sx={{ fontWeight: 'bold', flexGrow: 1 }}>
             Fashique
           </Typography>
+          {/* Display username and user icon */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <AccountCircleIcon />
+            <Typography variant="body1" noWrap>
+              {username}
+            </Typography>
+          </Box>
         </Toolbar>
       </AppBar>
 
@@ -129,11 +148,13 @@ export default function HeaderAndSidebar({ open, handleDrawerOpen, handleDrawerC
         </DrawerHeader>
         <Divider />
         <List>
-          {[{ text: 'Products', icon: <StorefrontIcon /> },
+          {[
+            { text: 'Products', icon: <StorefrontIcon /> },
             { text: 'Orders', icon: <ShoppingCartIcon /> },
-            { text: 'Categories', icon: <CategoryIcon />, expandable: true },
+            { text: 'Categories', icon: <CategoryIcon /> },
             { text: 'Customers', icon: <PeopleIcon /> },
-            { text: 'Contact us', icon: <ContactPhoneIcon /> }].map(({ text, icon }) => (
+            { text: 'Contact us', icon: <ContactPhoneIcon /> },
+          ].map(({ text, icon }) => (
             <ListItem key={text} disablePadding>
               <ListItemButton onClick={() => handleNavigate(text)}>
                 <ListItemIcon sx={{ color: '#555' }}>{icon}</ListItemIcon>
@@ -142,8 +163,21 @@ export default function HeaderAndSidebar({ open, handleDrawerOpen, handleDrawerC
             </ListItem>
           ))}
         </List>
+        {/* Logout module at the bottom */}
+        <Box sx={{ position: 'absolute', bottom: 0, width: '100%' }}>
+          <Divider />
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={handleLogout}>
+                <ListItemIcon sx={{ color: '#555' }}>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0, fontWeight: 'bold' }} />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
       </Drawer>
     </Box>
   );
 }
-
