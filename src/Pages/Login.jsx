@@ -87,10 +87,9 @@ const LoginPage = () => {
             </label>
             <Link to="/forgot-password">Forgot Password?</Link>
           </div>
-
+          <Link to='/dashboard'>
           <button type="submit">Login</button>
-
-
+          </Link>
           <div className="social-media">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
               <FaFacebook />
