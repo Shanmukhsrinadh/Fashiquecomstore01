@@ -117,7 +117,7 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
               mb: 4,
             }}
           >
-            {['Men', 'Women', 'Kids', 'Footwear', 'Wearables'].map((category) => (
+            {['Men', 'Women', 'Children', 'Footwear', 'Wearables'].map((category) => (
               <Box
                 key={category}
                 sx={{

@@ -31,6 +31,31 @@ const LoginPage = () => {
 
   return (
     <div className="animation-area">
+      {/* Cards Section */}
+      <div className="cards-upward">
+        <div className="card">
+          <img src="https://via.placeholder.com/150" alt="Card 1" />
+        </div>
+        <div className="card">
+          <img src="https://via.placeholder.com/150" alt="Card 2" />
+        </div>
+        <div className="card">
+          <img src="https://via.placeholder.com/150" alt="Card 3" />
+        </div>
+      </div>
+      <div className="cards-downward">
+        <div className="card opposite">
+          <img src="https://via.placeholder.com/150" alt="Card 4" />
+        </div>
+        <div className="card opposite">
+          <img src="https://via.placeholder.com/150" alt="Card 5" />
+        </div>
+        <div className="card opposite">
+          <img src="https://via.placeholder.com/150" alt="Card 6" />
+        </div>
+      </div>
+
+      {/* Login Form Section */}
       <div className="login-form">
         <h2>Login</h2>
         {error && <p className="error-message">{error}</p>}
