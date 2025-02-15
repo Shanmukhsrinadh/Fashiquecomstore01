@@ -21,9 +21,9 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import CategoryIcon from '@mui/icons-material/Category';
 import PeopleIcon from '@mui/icons-material/People';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
-import LogoutIcon from '@mui/icons-material/Logout'; // Import Logout icon
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // Import User icon
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import LogoutIcon from '@mui/icons-material/Logout';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -95,7 +95,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function HeaderAndSidebar({ open, handleDrawerOpen, handleDrawerClose, handleSectionChange }) {
   const theme = useTheme();
-  const navigate = useNavigate(); // Initialize useNavigate hook for navigation
+  const navigate = useNavigate();
 
   // Retrieve username from localStorage
   const username = localStorage.getItem('username') || 'Guest';
@@ -111,7 +111,7 @@ export default function HeaderAndSidebar({ open, handleDrawerOpen, handleDrawerC
     if (section === 'Products') {
       navigate('/dashboard'); // Redirect to /dashboard when "Products" is clicked
     }
-    handleSectionChange(section); 
+    handleSectionChange(section);
   };
 
   return (

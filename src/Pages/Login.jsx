@@ -1,57 +1,39 @@
-import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import { useNavigate, Link } from "react-router-dom";
+import React, { useState } from "react";
 import { FaFacebook, FaGoogle, FaTwitter } from "react-icons/fa";
-import '../Pages/Login.css'; // Import the CSS for the carousel and login form
+import "../Pages/Login.css";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Log username, password, and "Remember Me" status to the console
-    console.log('Login button clicked');
-    console.log('Username:', username);
-    console.log('Password:', password);
-    console.log('Remember Me:', rememberMe);
+    // Validate username length
+    if (username.length < 5) {
+      setError("Username must be at least 5 characters long");
+      return;
+    }
+
+    // Clear any previous errors
+    setError("");
 
     // Store the username in localStorage
-    localStorage.setItem('username', username);
+    localStorage.setItem("username", username);
 
-    // Redirect to the dashboard
-    window.location.href = '/dashboard'; 
+    // Navigate programmatically to the dashboard
+    navigate("/dashboard");
   };
 
   return (
     <div className="animation-area">
-      <div className="cards-upward">
-        <div className="card">
-          <img src="" alt="Card 1" />
-        </div>
-        <div className="card">
-          <img src="" alt="Card 2" />
-        </div>
-        <div className="card">
-          <img src="" alt="Card 3" />
-        </div>
-      </div>
-      <div className="cards-downward">
-        <div className="card opposite">
-          <img src="" alt="Card 4" />
-        </div>
-        <div className="card opposite">
-          <img src="" alt="Card 5" />
-        </div>
-        <div className="card opposite">
-          <img src="" alt="Card 6" />
-        </div>
-      </div>
-
-
       <div className="login-form">
         <h2>Login</h2>
+        {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleLogin}>
           <div className="form-group">
             <input
@@ -59,7 +41,7 @@ const LoginPage = () => {
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder=" " /* Add a space to trigger the floating label */
+              placeholder=" "
               required
             />
             <label htmlFor="username">User name</label>
@@ -87,9 +69,24 @@ const LoginPage = () => {
             </label>
             <Link to="/forgot-password">Forgot Password?</Link>
           </div>
-          <Link to='/dashboard'>
-          <button type="submit">Login</button>
+
+          {/* Using both Link and onClick event for GitHub Pages */}
+          <Link
+            to="/dashboard"
+            onClick={(e) => {
+              if (username.length < 5) {
+                e.preventDefault(); // Prevent navigation if validation fails
+                setError("Username must be at least 5 characters long");
+              } else {
+                setError("");
+                localStorage.setItem("username", username);
+                navigate("/dashboard");
+              }
+            }}
+          >
+            <button type="submit">Login</button>
           </Link>
+
           <div className="social-media">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
               <FaFacebook />
