@@ -10,18 +10,6 @@
   overflow: hidden;
 }
 
-.cards-upward {
-  display: flex ;
-  /* flex-direction: column; */
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  position: absolute;
-  left: 0;
-  top: 80%;
-  z-index: 1;
-}
-
 .cards-downward {
   display: flex;
   flex-direction: column;
@@ -30,15 +18,14 @@
   width: 150%;
   position: absolute;
   top: 0;
-  left: 45%;
+  left: 25%;
   z-index: 0;
   margin-left: -10%;
 }
 
-
-.card{
+.card {
   width: 300px;
-  height: 500px !important;
+  height: 460px !important;
   background-color: #EBEBDF;
   color: white;
   border-radius: 8px;
@@ -51,7 +38,7 @@
 
 .card.opposite {
   width: 300px;
-  height: 550px;
+  height: 470px;
   background-color: #EBEBDF;
   color: white;
   border-radius: 8px;
@@ -64,37 +51,14 @@
 
 .card img,
 .card.opposite img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transform: rotate(270deg) translateX(-10%);
-  background-size: cover;
+  width: 200%; /* Set width to 100% to fill the card */
+  height: 130%; /* Set height to 100% to fill the card */
+  object-fit: cover; /* Ensure the image covers the card without distortion */
+  transform: rotate(270deg); /* Remove rotation for now to debug */
+  position: absolute; /* Position the image absolutely within the card */
+  top: 0;
+  left: 0;
 }
-
-@keyframes moveCard {
-  0% {
-    transform: rotate(45deg) translate(0vw, 180vh);
-    opacity: 1;
-    visibility: visible;
-  }
-
-  20% {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  80% {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  100% {
-    transform: rotate(45deg) translate(0vw, -100vh);
-    opacity: 1;
-    visibility: visible;
-  }
-}
-
 @keyframes moveCardOpposite {
   0% {
     transform: rotate(45deg) translate(0vw, -100vh);
@@ -119,36 +83,65 @@
   }
 }
 
-.cards-upward .card:nth-child(1) {
-  animation: moveCard 10s linear infinite;
+@keyframes moveCardUp {
+  0% {
+    transform: rotate(45deg) translate(0vw, 180vh);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  20% {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  80% {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  100% {
+    transform: rotate(45deg) translate(0vw, -100vh);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.cards-upward {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 150%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 0;
+  margin-left: -10%;
+}
+
+.cards-upward .card.opposite:nth-child(1) {
+  animation: moveCardUp 10s linear infinite;
   animation-delay: 0s;
 }
 
-.cards-upward .card:nth-child(2) {
-  animation: moveCard 10s linear infinite;
+.cards-upward .card.opposite:nth-child(2) {
+  animation: moveCardUp 10s linear infinite;
   animation-delay: 2s;
 }
 
-.cards-upward .card:nth-child(3) {
-  animation: moveCard 10s linear infinite;
+.cards-upward .card.opposite:nth-child(3) {
+  animation: moveCardUp 10s linear infinite;
   animation-delay: 4s;
 }
-
-.cards-upward .card:nth-child(4) {
-  animation: moveCard 10s linear infinite;
+.cards-upward .card.opposite:nth-child(4) {
+  animation: moveCardUp 10s linear infinite;
   animation-delay: 6s;
 }
-
-.cards-upward .card:nth-child(5) {
-  animation: moveCard 10s linear infinite;
+.cards-upward .card.opposite:nth-child(5) {
+  animation: moveCardUp 10s linear infinite;
   animation-delay: 8s;
 }
-
-.cards-upward .card:nth-child(6) {
-  animation: moveCard 10s linear infinite;
-  animation-delay: 10s;
-}
-
 .cards-downward .card.opposite:nth-child(1) {
   animation: moveCardOpposite 10s linear infinite;
   animation-delay: 0s;
@@ -174,12 +167,12 @@
   animation-delay: 8s;
 }
 
-.cards-downward .card.opposite:nth-child(6) {
+.cards-downward .card.opposite:nth-child(4) {
   animation: moveCardOpposite 10s linear infinite;
-  animation-delay: 10s;
+  animation-delay: 6s;
 }
 
-/* Login Form Styling */
+
 .login-form {
   position: absolute;
   top: 50%;
@@ -227,6 +220,7 @@
 .login-form button:hover {
   background-color: black;
 }
+
 .form-group {
   position: relative;
   margin-bottom: 1.5rem;
@@ -234,7 +228,7 @@
 
 .form-group input {
   width: 100%;
-  padding: 1rem 1rem 0.5rem 1rem; 
+  padding: 1rem 1rem 0.5rem 1rem;
   font-size: 1rem;
   border-top: 1px solid white;
   border-left: 1px solid white;
@@ -252,20 +246,20 @@
   left: 1rem;
   transform: translateY(-50%);
   font-size: 1rem;
-  color: #212121; 
+  color: #212121;
   transition: all 0.2s ease-in-out;
-  pointer-events: none; 
+  pointer-events: none;
   z-index: 0;
 }
 
 
-.form-group input:focus + label,
-.form-group input:not(:placeholder-shown) + label {
+.form-group input:focus+label,
+.form-group input:not(:placeholder-shown)+label {
   top: 0.25rem;
   left: 0.75rem;
   font-size: 0.75rem;
   color: #212121;
-  background: white; 
+  background: white;
   padding: 0 0.25rem;
   z-index: 2;
 }
@@ -279,12 +273,12 @@
 .social-media {
   display: flex;
   justify-content: center;
-  gap: 1rem; 
+  gap: 1rem;
   margin-top: 1.5rem;
 }
 
 .social-media a {
-  color: #212121; 
+  color: #212121;
   font-size: 1.5rem;
   transition: color 0.2s ease-in-out;
 }

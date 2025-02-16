@@ -1,138 +1,165 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-    MDBBtn,
-    MDBContainer,
-    MDBRow,
-    MDBCol,
-    MDBCard,
-    MDBCardBody,
-    MDBInput,
-    MDBCheckbox,
-    MDBIcon
-} from 'mdb-react-ui-kit';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FaFacebook, FaGoogle, FaTwitter } from "react-icons/fa";
+import "../Pages/Signup.css"; 
 
-function Signup() {
-    const [data, setData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: ''
-    });
+const SignUpPage = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setData({
-            ...data,
-            [e.target.name]: e.target.value
-        });
-    };
+  const handleSignUp = (e) => {
+    e.preventDefault();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(data); // Here you would handle the form data (e.g., make API calls)
-    };
 
-    return (
-        <MDBContainer fluid className="p-4">
-            <MDBRow>
-                <MDBCol md="6" className="text-center text-md-start d-flex flex-column justify-content-center">
-                    <img
-                        src="https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=600"
-                        style={{ height: '94vh' }}
-                        alt="Signup image"
-                    />
-                </MDBCol>
+    if (firstName.length < 2 || lastName.length < 2) {
+      setError("First and Last Name must be at least 2 characters long");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
 
-                <MDBCol md="6">
-                    <MDBCard className="my-5">
-                        <MDBCardBody className="p-5">
-                            <form onSubmit={handleSubmit}>
-                                <MDBRow>
-                                    <MDBCol col="6">
-                                        <MDBInput
-                                            wrapperClass="mb-4"
-                                            label="First name"
-                                            id="form1"
-                                            type="text"
-                                            name="firstName"
-                                            value={data.firstName}
-                                            onChange={handleChange}
-                                        />
-                                    </MDBCol>
+    // Clear any previous errors
+    setError("");
 
-                                    <MDBCol col="6">
-                                        <MDBInput
-                                            wrapperClass="mb-4"
-                                            label="Last name"
-                                            id="form2"
-                                            type="text"
-                                            name="lastName"
-                                            value={data.lastName}
-                                            onChange={handleChange}
-                                        />
-                                    </MDBCol>
-                                </MDBRow>
+    // Store user data in localStorage (for demo purposes)
+    localStorage.setItem("firstName", firstName);
+    localStorage.setItem("lastName", lastName);
+    localStorage.setItem("email", email);
+    localStorage.setItem("phoneNumber", phoneNumber);
+    navigate("/Login");
+  };
 
-                                <MDBInput
-                                    wrapperClass="mb-4"
-                                    label="Email"
-                                    id="form3"
-                                    type="email"
-                                    name="email"
-                                    value={data.email}
-                                    onChange={handleChange}
-                                />
-                                <MDBInput
-                                    wrapperClass="mb-4"
-                                    label="Password"
-                                    id="form4"
-                                    type="password"
-                                    name="password"
-                                    value={data.password}
-                                    onChange={handleChange}
-                                />
+  return (
+    <div className="signup-container">
+      {/* Image Section */}
+      <div className="signup-image">
+        <img
+          src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80"
+          alt="Modern Design"
+        />
+        <div className="image-overlay">
+          <h2>Welcome to Our Community</h2>
+          <p>Join us and explore a world of possibilities.</p>
+        </div>
+      </div>
 
-                                <div className="d-flex justify-content-center mb-4">
-                                    <MDBCheckbox
-                                        name="flexCheck"
-                                        value=""
-                                        id="flexCheckDefault"
-                                        label="Subscribe to our newsletter"
-                                    />
-                                </div>
-                                <Link to='/Login'>
-                                    <MDBBtn className="w-100 mb-4" size="md" type="submit">
-                                        Log In
-                                    </MDBBtn>
-                                </Link>
+      {/* Sign Up Form Section */}
+      <div className="signup-form">
+        <h2>Sign Up</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSignUp}>
+          {/* First Name and Last Name (Side by Side on Desktop) */}
+          <div className="name-fields">
+            <div className="form-group">
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder=" "
+                required
+              />
+              <label htmlFor="firstName">First Name</label>
+            </div>
+            <div className="form-group">
+              <input
+                type="text"
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder=" "
+                required
+              />
+              <label htmlFor="lastName">Last Name</label>
+            </div>
+          </div>
 
-                            </form>
+          {/* Email */}
+          <div className="form-group">
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder=" "
+              required
+            />
+            <label htmlFor="email">Email</label>
+          </div>
 
-                            <div className="text-center">
-                                <p>or sign up with:</p>
+          {/* Phone Number */}
+          <div className="form-group">
+            <input
+              type="tel"
+              id="phoneNumber"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              placeholder=" "
+              required
+            />
+            <label htmlFor="phoneNumber">Phone Number</label>
+          </div>
 
-                                <MDBBtn tag="a" color="none" className="mx-3" style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon="facebook-f" size="sm" />
-                                </MDBBtn>
+          {/* Password */}
+          <div className="form-group">
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder=" "
+              required
+            />
+            <label htmlFor="password">Password</label>
+          </div>
 
-                                <MDBBtn tag="a" color="none" className="mx-3" style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon="twitter" size="sm" />
-                                </MDBBtn>
+          {/* Confirm Password */}
+          <div className="form-group">
+            <input
+              type="password"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder=" "
+              required
+            />
+            <label htmlFor="confirmPassword">Confirm Password</label>
+          </div>
 
-                                <MDBBtn tag="a" color="none" className="mx-3" style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon="google" size="sm" />
-                                </MDBBtn>
+          <button type="submit">Sign Up</button>
 
-                                <MDBBtn tag="a" color="none" className="mx-3" style={{ color: '#1266f1' }}>
-                                    <MDBIcon fab icon="github" size="sm" />
-                                </MDBBtn>
-                            </div>
-                        </MDBCardBody>
-                    </MDBCard>
-                </MDBCol>
-            </MDBRow>
-        </MDBContainer>
-    );
-}
+          <div className="social-media">
+            <p>Or sign up with:</p>
+            <div className="social-icons">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                <FaFacebook />
+              </a>
+              <a href="https://google.com" target="_blank" rel="noopener noreferrer">
+                <FaGoogle />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                <FaTwitter />
+              </a>
+            </div>
+          </div>
 
-export default Signup;
+          <div className="login-link">
+            <p>
+              Already have an account? <Link to="/login">Login</Link>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default SignUpPage;
