@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Allproducts } from '../Data/Allproducts';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -63,6 +63,9 @@ function ControlledCarousel() {
 }
 
 export default function MainContent({ activeSection, cart, setCart, handleSectionChange }) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screens
+  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md')); // Detect tablet screens
   const [orderPlaced, setOrderPlaced] = React.useState(false);
   const [selectedCategory, setSelectedCategory] = React.useState(null); // State for selected category
   const navigate = useNavigate();
@@ -102,7 +105,7 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
   };
 
   return (
-    <Box sx={{ flexGrow: 1, padding: 3 }}>
+    <Box sx={{ flexGrow: 1, padding: isMobile ? 2 : 3 }}>
       {activeSection === 'Products' && (
         <>
           <ControlledCarousel />
@@ -112,9 +115,10 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
             sx={{
               display: 'flex',
               justifyContent: 'center',
-              gap: 3,
+              gap: isMobile ? 1 : 3,
               mt: 4,
               mb: 4,
+              flexWrap: 'wrap', // Wrap categories on smaller screens
             }}
           >
             {['Men', 'Women', 'Children', 'Footwear', 'Wearables'].map((category) => (
@@ -123,11 +127,13 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
                 sx={{
                   backgroundColor: selectedCategory === category ? '#00796b' : '#f5f5f5',
                   borderRadius: '8px',
-                  padding: '16px',
+                  padding: isMobile ? '8px' : '16px',
                   textAlign: 'center',
                   cursor: 'pointer',
                   transition: 'transform 0.2s',
                   '&:hover': { transform: 'scale(1.05)' },
+                  flex: isMobile ? '1 1 40%' : '0 0 auto', // Adjust flex for mobile
+                  margin: isMobile ? '4px' : '0', // Add margin for mobile
                 }}
                 onClick={() => handleCategoryClick(category)}
               >
@@ -136,6 +142,7 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
                   sx={{
                     fontWeight: 'bold',
                     color: selectedCategory === category ? '#fff' : '#212121',
+                    fontSize: isMobile ? '0.9rem' : '1rem', // Adjust font size for mobile
                   }}
                 >
                   {category}
@@ -155,8 +162,12 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
             <Box
               sx={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-                gap: 3,
+                gridTemplateColumns: isMobile
+                  ? 'repeat(auto-fill, minmax(150px, 1fr))' // Adjust for mobile
+                  : isTablet
+                  ? 'repeat(auto-fill, minmax(200px, 1fr))' // Adjust for tablet
+                  : 'repeat(auto-fill, minmax(250px, 1fr))', // Default for desktop
+                gap: isMobile ? 2 : 3,
                 mt: 2,
                 color: '#777',
               }}
@@ -171,7 +182,7 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                     transition: 'transform 0.2s',
                     '&:hover': { transform: 'scale(1.02)' },
-                    padding: 2,
+                    padding: isMobile ? 1 : 2,
                     display: 'flex',
                     flexDirection: 'column',
                     height: '100%',
@@ -182,16 +193,16 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
                     alt={product.title}
                     style={{ width: '100%', height: 'auto', borderRadius: '6px' }}
                   />
-                  <Typography variant="h6" sx={{ mt: 1, fontWeight: 'bold' }}>
+                  <Typography variant="h6" sx={{ mt: 1, fontWeight: 'bold', fontSize: isMobile ? '0.9rem' : '1rem' }}>
                     {product.brand}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#777', mb: 2 }}>
+                  <Typography variant="body2" sx={{ color: '#777', mb: 2, fontSize: isMobile ? '0.8rem' : '0.9rem' }}>
                     <p>Price: <strong style={{ color: 'black' }}>₹{product.price}</strong></p>
                   </Typography>
                   <Box sx={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between' }}>
                     <button
                       className={`btn btn-sm me-2 ${cart.some((item) => item.id === product.id) ? 'btn-success' : 'btn-dark'}`}
-                      style={{ width: '48%', height: '35px' }}
+                      style={{ width: '48%', height: '35px', fontSize: isMobile ? '0.8rem' : '0.9rem' }}
                       onClick={() => handleAddToCart(product)}
                       disabled={cart.some((item) => item.id === product.id)}
                     >
@@ -199,7 +210,7 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
                     </button>
                     <button
                       className="btn btn-outline-dark btn-sm"
-                      style={{ width: '48%', height: '35px' }}
+                      style={{ width: '48%', height: '35px', fontSize: isMobile ? '0.8rem' : '0.9rem' }}
                       onClick={() => handleViewProduct(product)}
                     >
                       View
@@ -226,8 +237,12 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
               <Box
                 sx={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-                  gap: 3,
+                  gridTemplateColumns: isMobile
+                    ? 'repeat(auto-fill, minmax(150px, 1fr))' // Adjust for mobile
+                    : isTablet
+                    ? 'repeat(auto-fill, minmax(200px, 1fr))' // Adjust for tablet
+                    : 'repeat(auto-fill, minmax(250px, 1fr))', // Default for desktop
+                  gap: isMobile ? 2 : 3,
                   mt: 2,
                   color: '#777',
                 }}
@@ -242,7 +257,7 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
                       boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                       transition: 'transform 0.2s',
                       '&:hover': { transform: 'scale(1.02)' },
-                      padding: 2,
+                      padding: isMobile ? 1 : 2,
                       display: 'flex',
                       flexDirection: 'column',
                       height: '100%',
@@ -253,16 +268,17 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
                       alt={product.title}
                       style={{ width: '100%', height: 'auto', borderRadius: '6px' }}
                     />
-                    <Typography variant="h6" sx={{ mt: 1, fontWeight: 'bold' }}>
+                    <Typography variant="h6" sx={{ mt: 1, fontWeight: 'bold', fontSize: isMobile ? '0.9rem' : '1rem' }}>
                       {product.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#777', mb: 2 }}>
+                    <Typography variant="body2" sx={{ color: '#777', mb: 2, fontSize: isMobile ? '0.8rem' : '0.9rem' }}>
                       Price: ₹{product.price}
                     </Typography>
                     <Box sx={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between' }}>
                       <button
                         className="btn btn-danger btn-sm"
                         onClick={() => handleRemoveFromCart(product.id)}
+                        style={{ fontSize: isMobile ? '0.8rem' : '0.9rem' }}
                       >
                         Remove from Cart
                       </button>
@@ -274,12 +290,14 @@ export default function MainContent({ activeSection, cart, setCart, handleSectio
                 <button
                   className="btn btn-outline-dark btn-sm"
                   onClick={() => handleSectionChange('Products')}
+                  style={{ fontSize: isMobile ? '0.8rem' : '0.9rem' }}
                 >
                   Continue Shopping
                 </button>
                 <button
                   className="btn btn-dark btn-sm"
                   onClick={handleConfirmPurchase}
+                  style={{ fontSize: isMobile ? '0.8rem' : '0.9rem' }}
                 >
                   Confirm Purchase
                 </button>

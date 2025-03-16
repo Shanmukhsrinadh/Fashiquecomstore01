@@ -16,6 +16,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CategoryIcon from '@mui/icons-material/Category';
 import PeopleIcon from '@mui/icons-material/People';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+import useMediaQuery from '@mui/material/useMediaQuery'; // Hook for responsive behavior
 
 const drawerWidth = 240;
 
@@ -67,30 +68,50 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function Sidebar({ open, handleDrawerClose, theme }) {
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm')); // Detect small screens
+
   return (
-    <Drawer variant="permanent" open={open}>
-      <DrawerHeader>
-        <IconButton onClick={handleDrawerClose}>
-          {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-        </IconButton>
-      </DrawerHeader>
-      <Divider />
-      <List>
-        {[
-          { text: 'Products', icon: <StorefrontIcon /> },
-          { text: 'Orders', icon: <ShoppingCartIcon /> },
-          { text: 'Categories', icon: <CategoryIcon /> },
-          { text: 'Customers', icon: <PeopleIcon /> },
-          { text: 'Contact us', icon: <ContactPhoneIcon /> },
-        ].map(({ text, icon }) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon sx={{ color: '#555' }}>{icon}</ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0, fontWeight: 'bold' }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Drawer>
+    <Box
+      sx={{
+        display: 'flex',
+        height: '100vh',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Drawer for larger screens */}
+      <Drawer
+        variant={isSmallScreen ? 'temporary' : 'permanent'} // Use temporary variant for small screens
+        open={open}
+        onClose={handleDrawerClose} // Close drawer on small screens when clicking outside
+        ModalProps={{
+          keepMounted: true, // Better performance on mobile
+        }}
+      >
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          {[
+            { text: 'Products', icon: <StorefrontIcon /> },
+            { text: 'Orders', icon: <ShoppingCartIcon /> },
+            { text: 'Categories', icon: <CategoryIcon /> },
+            { text: 'Customers', icon: <PeopleIcon /> },
+            { text: 'Contact us', icon: <ContactPhoneIcon /> },
+          ].map(({ text, icon }) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton
+                onClick={isSmallScreen ? handleDrawerClose : undefined} // Close drawer on small screens when an item is clicked
+              >
+                <ListItemIcon sx={{ color: '#555' }}>{icon}</ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0, fontWeight: 'bold' }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+    </Box>
   );
 }

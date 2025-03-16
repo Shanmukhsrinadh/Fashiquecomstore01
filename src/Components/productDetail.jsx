@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Allproducts } from '../Data/Allproducts';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import HeaderAndSidebar from '../Componentsind/Navigation';
+import useMediaQuery from '@mui/material/useMediaQuery'; // Hook for responsive behavior
 
 function ProductDetail() {
   const [activeSection, setActiveSection] = React.useState('Products');
@@ -21,6 +22,8 @@ function ProductDetail() {
   const { id } = useParams();
   const product = Allproducts.find((p) => p.id === parseInt(id));
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm')); // Detect small screens
 
   // Sync cart with localStorage
   React.useEffect(() => {
@@ -70,14 +73,17 @@ function ProductDetail() {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+            gridTemplateColumns: isSmallScreen ? '1fr' : 'repeat(auto-fill, minmax(250px, 1fr))',
             gap: 3,
           }}
         >
           {similarProducts.map((item) => (
             <Box
               key={item.id}
-              onClick={() => navigate(`/product/${item.id}`)} // Navigate to the clicked product
+              onClick={() => {
+                navigate(`/product/${item.id}`); // Navigate to new product
+                window.scrollTo(0, 0); // Scroll to top
+              }}
               sx={{
                 backgroundColor: '#fff',
                 borderRadius: '8px',
@@ -90,10 +96,6 @@ function ProductDetail() {
                 flexDirection: 'column',
                 height: '100%',
                 cursor: 'pointer',
-              }}
-              onClick={() => {
-                navigate(`/product/${item.id}`); // Navigate to new product
-                window.scrollTo(0, 0); // Scroll to top
               }}
             >
               <img
@@ -132,7 +134,7 @@ function ProductDetail() {
       </Box>
     );
   };
-  
+
   const renderCart = () => {
     return (
       <>
@@ -146,7 +148,15 @@ function ProductDetail() {
               Your cart is empty!
             </Typography>
           ) : (
-            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 3, mt: 2, color: '#777' }}>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: isSmallScreen ? '1fr' : 'repeat(auto-fill, minmax(250px, 1fr))',
+                gap: 3,
+                mt: 2,
+                color: '#777',
+              }}
+            >
               {cart.map((item) => (
                 <Box
                   key={item.id}
@@ -226,8 +236,15 @@ function ProductDetail() {
   const renderProductDetails = () => {
     return (
       <>
-        <Box sx={{ display: 'flex', flexDirection: 'row', gap: '40px', padding: '20px' }}>
-          <Box sx={{ flex: 1, maxWidth: '500px' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: isSmallScreen ? 'column' : 'row',
+            gap: '40px',
+            padding: '20px',
+          }}
+        >
+          <Box sx={{ flex: 1, maxWidth: isSmallScreen ? '100%' : '500px' }}>
             <img
               src={product.url}
               alt={product.title}

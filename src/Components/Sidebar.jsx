@@ -39,6 +39,9 @@ function ControlledCarousel() {
     height: '360px',
     objectFit: 'cover',
     marginTop: '30px',
+    [useTheme().breakpoints.down('sm')]: {
+      height: '200px',
+    },
   };
 
   return (
@@ -122,7 +125,7 @@ const AppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  backgroundColor: '#00796b',  // Change this to your desired color
+  backgroundColor: '#00796b',
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
@@ -179,12 +182,11 @@ export default function MiniDrawer() {
     Kids: false,
   });
   const [cart, setCart] = React.useState(() => {
-    // Load cart from localStorage on initial render
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
   const [activeSection, setActiveSection] = React.useState('Products');
-  const [orderPlaced, setOrderPlaced] = React.useState(false); // For order confirmation popup
+  const [orderPlaced, setOrderPlaced] = React.useState(false);
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -226,12 +228,12 @@ export default function MiniDrawer() {
   };
 
   const handleConfirmPurchase = () => {
-    setOrderPlaced(true); // Show order confirmation popup
-    setCart([]); // Clear the cart
+    setOrderPlaced(true);
+    setCart([]);
   };
 
   const handleCloseSnackbar = () => {
-    setOrderPlaced(false); // Close the popup
+    setOrderPlaced(false);
   };
 
   return (
@@ -248,7 +250,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap sx={{ fontWeight: 'bold' }}>
-          Fashique
+            Fashique
           </Typography>
         </Toolbar>
       </AppBar>
@@ -305,7 +307,6 @@ export default function MiniDrawer() {
         </List>
       </Drawer>
 
-      {/* Main Content */}
       <MainContent open={open} sx={{ flexGrow: 1, padding: 3 }}>
         {activeSection === 'Products' && (
           <>
@@ -321,7 +322,7 @@ export default function MiniDrawer() {
               <Box
                 sx={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+                  gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' },
                   gap: 3,
                   mt: 2,
                   color: '#777'
@@ -352,12 +353,12 @@ export default function MiniDrawer() {
                       {product.brand}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#777', mb: 2 }}>
-                    <p>Price: <strong style={{ color: 'black' }}>₹{product.price}</strong></p>
+                      <p>Price: <strong style={{ color: 'black' }}>₹{product.price}</strong></p>
                     </Typography>
                     <Box sx={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between' }}>
                       <button
                         className={`btn btn-sm me-2 ${cart.some((item) => item.id === product.id) ? 'btn-success' : 'btn-dark'}`}
-                        style={{ width: '48%', height: '35px' }}  // Added height and width
+                        style={{ width: '48%', height: '35px' }}
                         onClick={() => handleAddToCart(product)}
                         disabled={cart.some((item) => item.id === product.id)}
                       >
@@ -365,13 +366,12 @@ export default function MiniDrawer() {
                       </button>
                       <button
                         className="btn btn-outline-dark btn-sm"
-                        style={{ width: '48%', height: '35px' }}  // Added height and width
+                        style={{ width: '48%', height: '35px' }}
                         onClick={() => handleViewProduct(product)}
                       >
                         View
                       </button>
                     </Box>
-
                   </Box>
                 ))}
               </Box>
@@ -393,7 +393,7 @@ export default function MiniDrawer() {
                 <Box
                   sx={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+                    gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' },
                     gap: 3,
                     mt: 2,
                     color: '#777'
@@ -457,7 +457,6 @@ export default function MiniDrawer() {
         )}
       </MainContent>
 
-      {/* Order Confirmation Popup */}
       <Snackbar
         open={orderPlaced}
         autoHideDuration={3000}
